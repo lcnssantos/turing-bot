@@ -2,10 +2,11 @@
   "private": true,
   "workspaces": {
     "packages": [
-      "package/api"
+      "packages/api"
     ]
   },
   "scripts": {
-    "start:api:dev": "yarn workspace @turingbot/api start:dev"
+    "start:api:dev": "yarn workspace @turingbot/api start:dev",
+    "start:bot:dev": "yarn workspace @turingbot/bot start:dev"
   }
 }

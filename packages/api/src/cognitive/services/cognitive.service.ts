@@ -16,17 +16,25 @@ export class CognitiveService {
     question,
   }: CognitiveRequestDto): Promise<CognitiveResponseDto> {
     const googleData = await this.googleService.fetch(question);
-    console.log(googleData);
     const firstLink = googleData.response[0].url;
-    const {
-      result: { concepts, ...data },
-    } = await this.watsonService.analizeUrl(firstLink);
+    const secondLink = googleData.response[1].url;
+    let usedLink: string;
 
-    console.log(data);
+    try {
+      var {
+        result: { concepts, analyzed_text },
+      } = await this.watsonService.analizeUrl(firstLink);
+      usedLink = firstLink;
+    } catch {
+      var {
+        result: { concepts, analyzed_text },
+      } = await this.watsonService.analizeUrl(secondLink);
+      usedLink = secondLink;
+    }
 
     return {
-      images: [],
-      text: [],
+      link: usedLink,
+      text: analyzed_text.split('\n').map(text => text.trim()).map(text => text.trimEnd()).filter(item => item.length > 0).slice(0, 5),
       links: googleData.response.slice(0, 2).map((google) => google.url),
       search: question,
       suggestions: concepts.slice(0, 2).map((concept) => concept.text),

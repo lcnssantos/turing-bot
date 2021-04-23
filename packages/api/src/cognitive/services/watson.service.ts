@@ -35,7 +35,7 @@ export class WatsonService {
     const { result } = await this.client.analyze({
       text,
       features: { keywords: {}, concepts: {}, entities: {} },
-      language: 'pt-Br',
+      language: 'BP',
     });
 
     await this.cache.save<TextResult>(
@@ -59,6 +59,7 @@ export class WatsonService {
 
     const { result } = await this.client.analyze({
       url,
+      returnAnalyzedText: true,
       features: {
         keywords: {},
         concepts: {},
@@ -69,9 +70,9 @@ export class WatsonService {
         relations: {},
         semantic_roles: {},
         sentiment: {},
-        syntax: {},
+        syntax: {sentences: true}, 
       },
-      language: 'pt-Br',
+      language: 'BP',
     });
 
     await this.cache.save<HtmlResult>(url, { result, url }, 15 * 24 * 60 * 60);

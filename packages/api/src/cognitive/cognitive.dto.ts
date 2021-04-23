@@ -10,9 +10,6 @@ export class CognitiveResponseDto {
   text: string[];
 
   @ApiProperty()
-  images: string[];
-
-  @ApiProperty()
   links: string[];
 
   @ApiProperty()
@@ -20,4 +17,7 @@ export class CognitiveResponseDto {
 
   @ApiProperty()
   suggestions: string[];
+
+  @ApiProperty()
+  link: string
 }
