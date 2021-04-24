@@ -28,8 +28,7 @@ bot.on("text", async (ctx) => {
     );
 
     await ctx.reply("Esses links também podem te ajudar");
-    await ctx.reply(result.links[0]);
-    await ctx.reply(result.links[1]);
+    await Promise.all(result.links.map((link: string) => ctx.reply(link)));
   } catch (e) {
     await ctx.reply("Infelizmente um erro aconteceu, tente mais tarde");
   }

@@ -15,7 +15,9 @@ export class CognitiveService {
   async fetch({
     question,
   }: CognitiveRequestDto): Promise<CognitiveResponseDto> {
-    const googleData = await this.googleService.fetch(question);
+    const googleData = await this.googleService.fetch(
+      'Programação: ' + question.replace('?', ''),
+    );
     const firstLink = googleData.response[0].url;
     const secondLink = googleData.response[1].url;
     let usedLink: string;
@@ -34,8 +36,16 @@ export class CognitiveService {
 
     return {
       link: usedLink,
-      text: analyzed_text.split('\n').map(text => text.trim()).map(text => text.trimEnd()).filter(item => item.length > 0).slice(0, 5),
-      links: googleData.response.slice(0, 2).map((google) => google.url),
+      text: analyzed_text
+        .split('\n')
+        .map((text) => text.trim())
+        .map((text) => text.trimEnd())
+        .filter((item) => item.length > 0)
+        .slice(0, 5),
+      links: googleData.response
+        .filter((response) => response.url !== usedLink)
+        .slice(0, 3)
+        .map((google) => google.url),
       search: question,
       suggestions: concepts.slice(0, 2).map((concept) => concept.text),
     };
