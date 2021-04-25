@@ -18,8 +18,8 @@ export class CognitiveService {
     const googleData = await this.googleService.fetch(
       'Programação: ' + question.replace('?', ''),
     );
-    const firstLink = googleData.response[0].url;
-    const secondLink = googleData.response[1].url;
+    const firstLink = googleData.response[0]?.url;
+    const secondLink = googleData.response[1]?.url;
     let usedLink: string;
 
     try {
