@@ -27,8 +27,14 @@ bot.on("text", async (ctx) => {
         .join(" e ")} `
     );
 
-    await ctx.reply("Esses links também podem te ajudar");
-    await Promise.all(result.links.map((link: string) => ctx.reply(link)));
+    if (result.links.length) {
+      if (result.links.length > 1) {
+        await ctx.reply("Esses links também podem te ajudar");
+      } else {
+        await ctx.reply("Esse link também pode te ajudar");
+      }
+      await Promise.all(result.links.map((link: string) => ctx.reply(link)));
+    }
   } catch (e) {
     await ctx.reply("Infelizmente um erro aconteceu, tente mais tarde");
   }

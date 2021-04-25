@@ -1,12 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { CacheService } from './cache.service';
-import * as algorithmia from 'algorithmia';
+const serp = require('serp');
 
 interface GoogleLink {
-  position: number;
-  snippet: string;
   title: string;
   url: string;
+}
+
+interface SerpResponse {
+  url: string;
+  title: string;
 }
 
 interface GoogleResponse {
@@ -21,14 +24,12 @@ const allowedSites = [
   'imasters',
   'edu',
   'developer.mozilla',
+  'alura.com.br/artigos',
 ];
 
 @Injectable()
 export class GoogleService {
-  private client: any;
-  constructor(private cacheService: CacheService) {
-    this.client = new algorithmia.client(process.env.ALGORITHMIA_KEY);
-  }
+  constructor(private cacheService: CacheService) {}
 
   async fetch(searchTerm: string): Promise<GoogleResponse> {
     if (searchTerm === '') {
@@ -39,11 +40,23 @@ export class GoogleService {
     let cacheData = await this.cacheService.get<GoogleResponse>(cacheKey);
 
     if (!cacheData) {
-      const data = await this.client
-        .algo('specrom/Google_scraper/0.1.4?timeout=300')
-        .pipe({ query: searchTerm });
+      const options = {
+        qs: {
+          q: searchTerm,
+          filter: 0,
+          pws: 0,
+        },
+        num: 100,
+      };
 
-      const response = data.get();
+      const response = ((await serp.search(
+        options,
+      )) as Array<SerpResponse>).map((data) => {
+        data.url = data.url
+          .replace('/url?esrc=s&q=&rct=j&sa=U&url=', '')
+          .split('&ved=')[0];
+        return data;
+      });
 
       await this.cacheService.save<GoogleResponse>(cacheKey, {
         response,
