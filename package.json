@@ -7,7 +7,11 @@
     ]
   },
   "scripts": {
+    "build:api": "yarn workspace @turingbot/api build",
     "start:api:dev": "yarn workspace @turingbot/api start:dev",
-    "start:bot:dev": "yarn workspace @turingbot/bot start:dev"
+    "start:api": "yarn workspace @turingbot/api start:prod",
+    "build:bot": "yarn workspace @turingbot/bot build",
+    "start:bot:dev": "yarn workspace @turingbot/bot start:dev",
+    "start:bot": "yarn workspace @turingbot/bot start:prod"
   }
 }

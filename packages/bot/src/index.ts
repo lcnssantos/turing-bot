@@ -36,6 +36,7 @@ bot.on("text", async (ctx) => {
       await Promise.all(result.links.map((link: string) => ctx.reply(link)));
     }
   } catch (e) {
+    console.log(e);
     await ctx.reply("Infelizmente um erro aconteceu, tente mais tarde");
   }
 });

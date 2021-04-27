@@ -9,6 +9,8 @@
     "telegraf": "^4.3.0"
   },
   "scripts": {
+    "build": "tsc",
+    "start:prod": "node dist/index.js",
     "start:dev": "ts-node-dev --respawn --transpile-only src/index.ts"
   },
   "devDependencies": {
