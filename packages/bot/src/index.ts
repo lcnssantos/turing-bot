@@ -36,8 +36,15 @@ bot.on("text", async (ctx) => {
       await Promise.all(result.links.map((link: string) => ctx.reply(link)));
     }
   } catch (e) {
-    console.log(e);
-    await ctx.reply("Infelizmente um erro aconteceu, tente mais tarde");
+    switch(e.response.data.statusCode) {
+      case 404:
+        await ctx.reply("Infelizmente não consegui achar nada de interessante sobre o assunto. Estou aprendendo a cada dia mais")
+        break;
+      default:
+        await ctx.reply("Infelizmente um erro aconteceu, tente mais tarde");
+        break;
+    }
+    
   }
 });
 

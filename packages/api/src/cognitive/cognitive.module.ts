@@ -5,7 +5,6 @@ import { WatsonService } from './services/watson.service';
 import * as mongoStore from 'cache-manager-mongodb';
 import { ConfigModule } from '@nestjs/config';
 import { CacheService } from './services/cache.service';
-import { WikipediaService } from './services/wikipedia.service';
 import { GoogleService } from './services/google.service';
 
 @Module({
@@ -25,7 +24,6 @@ import { GoogleService } from './services/google.service';
     CognitiveService,
     WatsonService,
     CacheService,
-    WikipediaService,
     GoogleService,
   ],
   controllers: [CognitiveController],
