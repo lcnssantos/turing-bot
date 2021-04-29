@@ -5,11 +5,12 @@ import { BotService } from './bot/bot.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const httpAdapter = app.getHttpAdapter();
+
+  await app.listen(process.env.PORT);
 
   const botService = await app.get(BotService);
 
-  botService.start();
-
-  await app.listen(process.env.PORT);
+  botService.start(httpAdapter);
 }
 bootstrap();

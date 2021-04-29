@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpServer, Injectable } from '@nestjs/common';
 import { CognitiveService } from 'src/cognitive/services/cognitive.service';
 import { BotInterface } from './bot.interface';
 import { BotTelegram } from './telegram/bot.telegram';
@@ -14,9 +14,9 @@ export class BotService {
         ]
     }
 
-    async start() {
+    async start(server: HttpServer) {
         await Promise.all(this.connectors.map(async connector => {
-            await connector.configure();
+            await connector.configure(server);
             connector.registerMessageListener(this.receiveMessage.bind(this));
         }))
     }

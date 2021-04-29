@@ -1,6 +1,7 @@
 import { BotInterface, MessageListener } from '../bot.interface';
 import { Telegraf } from 'telegraf'
-import { Logger } from '@nestjs/common'
+import { HttpServer, Logger } from '@nestjs/common'
+import { HttpAdapterHost } from '@nestjs/core';
 
 export class BotTelegram implements BotInterface {
 
@@ -28,7 +29,7 @@ export class BotTelegram implements BotInterface {
     await this.bot.telegram.sendMessage(chatId, text);
   }
 
-  async configure() {
+  async configure( server: HttpServer) {
     this.logger.log("Start configure")
 
     this.bot.start((ctx) => {
@@ -42,6 +43,14 @@ export class BotTelegram implements BotInterface {
     this.bot.on("text", ctx => {
       this.listeners.forEach(listener => listener(ctx.message.text, ctx.message.chat.id.toString(), this));
     })
+
+    if(process.env.ENV === "PROD") {
+      this.logger.log("Setting webhook!")
+      
+      await this.bot.telegram.setWebhook(`${process.env.URL}/telegram-webhook`)
+      server.use(this.bot.webhookCallback('telegram-webhook1'))
+
+    }
 
     await this.bot.launch();
 
