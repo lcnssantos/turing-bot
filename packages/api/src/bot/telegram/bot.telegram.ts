@@ -48,7 +48,7 @@ export class BotTelegram implements BotInterface {
       this.logger.log("Setting webhook!")
       
       await this.bot.telegram.setWebhook(`${process.env.URL}/telegram-webhook`)
-      server.use(this.bot.webhookCallback('telegram-webhook1'))
+      server.use(this.bot.webhookCallback('telegram-webhook'))
 
     }
 
