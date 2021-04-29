@@ -1,5 +1,5 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { CognitiveRequestDto, CognitiveResponseDto } from '../cognitive.dto';
+import { Injectable } from '@nestjs/common';
+import { CognitiveResponseDto } from '../cognitive.dto';
 import { GoogleService } from './google.service';
 import { WatsonService } from './watson.service';
 
@@ -8,17 +8,15 @@ export class CognitiveService {
   constructor(
     private watsonService: WatsonService,
     private googleService: GoogleService,
-  ) { }
+  ) {}
 
-  async fetch(
-    question
-      : string): Promise<CognitiveResponseDto> {
+  async fetch(question: string): Promise<CognitiveResponseDto> {
     const googleData = await this.googleService.fetch(
       'Programação: ' + question,
     );
 
     if (googleData.response.length === 0) {
-      throw new Error("NOTFOUND");
+      throw new Error('NOTFOUND');
     }
 
     const firstLink = googleData.response[0]?.url;

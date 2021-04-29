@@ -6,14 +6,14 @@
 
 ## About
 
-This repository contains a telegram bot developed at an university extension course of USJT - Universidade São Judas Tadeu - São Paulo - Brazil.
+This repository contains a telegram bot developed at an university extension project of USJT - Universidade São Judas Tadeu - São Paulo - Brazil.
 
 This bot is created with goal to answer generic questions about computer programming.
 
 
 ## Requirements
 
-Once that all components of this project is containerized, the only tools you will need is just docker and docker-compose.
+Since that all components of this project is containerized, the only tools you will need is just docker and docker-compose.
 
 
 ## Installation
@@ -27,14 +27,25 @@ After that, follow the procedure below to put your application working.
 
 1. Run command `cp example.env .env`
 2. Open `.env` file with your favorite text editor tool and set the variables as follow:
-    - `BOT_TOKEN`: This is your bot token, provided by the bot father
-    - `COGNITIVE_API`: This is the Cognitive API url, if you're using local environment using provided `docker-compose.yml`, use `http://api:8080/` as value
-    - `PORT`: This is the port where the bot and cognitive api will run, for local environment using provided `docker-compose.yml`, use `3000` - note that this port will be forwarded by `docker` automatically.
+    - `TELEGRAM_BOT_TOKEN`: This is your bot token, provided by the bot father
+    - `PORT`: This is the port where the bot will run, for local environment using provided `docker-compose.yml`, use `8080` - note that this port will be forwarded by `docker` automatically to `3000`.
     - `MONGO_URL`: This is the MongoDb connection string that will store the cache response from `IBM -  Natural Language Understanding`, for local environment using provided `docker-compose`, use the value: `mongodb://turing:turing@mongo:27017/admin`
     - `IBM_API_KEY` and `IBM_API_URL` - these variables are the IBM cloud credentials.
+    - `ENV` - The environment where application is running, `DEV` or `PROD`
+    - `URL` - The actual url of application in order to setup the telegram webhooks. Only necessary for `PROD` environments.
 3. Run command `docker-compose-up -d ` to put your containers to working.
 
 
 ## Using
 
 1. Once that your containers is working well, you can just start a conversation with your bot and ask a lot of questions about programming
+
+## Technologies used
+
+1. `NodeJs` as javascript runtime;
+2. `Typescript` as primary programming language;
+3. `Docker` and `Docker Compose` for containers;
+4. `NestJs` as backend framework to handle http webhooks requests as well as dependency injection;
+5. `IBM Natural Language Understanding` to analyze the links and extract metadata.
+6. `MongoDb` to cache responses from `IBM Natural Language Understanding`
+7. `Telegraf` as wrapper to `Telegram Bot API`

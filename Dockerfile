@@ -7,6 +7,6 @@ COPY . ./
 RUN apk add yarn --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
 
 RUN yarn
-RUN yarn build:bot
+RUN yarn build
 
-CMD ["yarn", "start:bot"]
+CMD ["yarn", "start:prod"]

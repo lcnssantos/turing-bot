@@ -20,6 +20,6 @@ import { GoogleService } from './services/google.service';
     }),
   ],
   providers: [CognitiveService, WatsonService, CacheService, GoogleService],
-  exports: [CognitiveService]
+  exports: [CognitiveService],
 })
 export class CognitiveModule {}
