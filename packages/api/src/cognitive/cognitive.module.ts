@@ -1,5 +1,4 @@
 import { CacheModule, Module } from '@nestjs/common';
-import { CognitiveController } from './cognitive.controller';
 import { CognitiveService } from './services/cognitive.service';
 import { WatsonService } from './services/watson.service';
 import * as mongoStore from 'cache-manager-mongodb';
@@ -20,12 +19,7 @@ import { GoogleService } from './services/google.service';
       },
     }),
   ],
-  providers: [
-    CognitiveService,
-    WatsonService,
-    CacheService,
-    GoogleService,
-  ],
-  controllers: [CognitiveController],
+  providers: [CognitiveService, WatsonService, CacheService, GoogleService],
+  exports: [CognitiveService]
 })
 export class CognitiveModule {}

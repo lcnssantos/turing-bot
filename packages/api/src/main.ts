@@ -1,19 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { BotService } from './bot/bot.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const config = new DocumentBuilder()
-    .setTitle('Turing Bot API')
-    .setDescription('The turing API description')
-    .setVersion('1.0')
-    .build();
+  const botService = await app.get(BotService);
 
-  const document = SwaggerModule.createDocument(app, config);
-
-  SwaggerModule.setup('docs', app, document);
+  botService.start();
 
   await app.listen(process.env.PORT);
 }

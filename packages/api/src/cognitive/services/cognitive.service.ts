@@ -10,15 +10,15 @@ export class CognitiveService {
     private googleService: GoogleService,
   ) { }
 
-  async fetch({
-    question,
-  }: CognitiveRequestDto): Promise<CognitiveResponseDto> {
+  async fetch(
+    question
+      : string): Promise<CognitiveResponseDto> {
     const googleData = await this.googleService.fetch(
       'Programação: ' + question,
     );
 
-    if(googleData.response.length === 0) {
-      throw new NotFoundException();
+    if (googleData.response.length === 0) {
+      throw new Error("NOTFOUND");
     }
 
     const firstLink = googleData.response[0]?.url;

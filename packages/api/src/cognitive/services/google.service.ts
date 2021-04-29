@@ -27,16 +27,11 @@ const allowedSites = [
   'alura.com.br/artigos',
 ];
 
-const blackListSites = [
-  'youtube',
-  'facebook',
-  'twitter',
-  'linkedin'
-]
+const blackListSites = ['youtube', 'facebook', 'twitter', 'linkedin'];
 
 @Injectable()
 export class GoogleService {
-  constructor(private cacheService: CacheService) { }
+  constructor(private cacheService: CacheService) {}
 
   async fetch(searchTerm: string): Promise<GoogleResponse> {
     if (searchTerm === '') {
@@ -76,8 +71,10 @@ export class GoogleService {
       };
     }
 
-    cacheData.response = cacheData.response.filter((data) =>
-      allowedSites.some((site) => data.url.indexOf(site) > -1) && !blackListSites.some(site => data.url.indexOf(site) > -1),
+    cacheData.response = cacheData.response.filter(
+      (data) =>
+        allowedSites.some((site) => data.url.indexOf(site) > -1) &&
+        !blackListSites.some((site) => data.url.indexOf(site) > -1),
     );
 
     return cacheData;
