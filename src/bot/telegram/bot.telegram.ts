@@ -50,7 +50,7 @@ export class BotTelegram implements BotInterface {
       this.logger.log('Setting webhook!');
 
       await this.bot.telegram.setWebhook(url);
-      await server.use(this.bot.webhookCallback('telegram'));
+      await server.use(this.bot.webhookCallback('/telegram'));
     } else {
       await this.bot.launch();
     }
