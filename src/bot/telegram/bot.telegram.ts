@@ -46,12 +46,11 @@ export class BotTelegram implements BotInterface {
     });
 
     if (process.env.ENV === 'PROD') {
-      const endpoint = v4();
-      const url = `${process.env.URL}/${endpoint}`;
+      const url = `${process.env.URL}/telegram`;
       this.logger.log('Setting webhook!');
 
       await this.bot.telegram.setWebhook(url);
-      await server.use(this.bot.webhookCallback(`/${endpoint}`));
+      await server.use(this.bot.webhookCallback('telegram'));
     } else {
       await this.bot.launch();
     }
