@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import * as NLU from 'ibm-watson/natural-language-understanding/v1';
 import { IamAuthenticator } from 'ibm-watson/auth';
 import { CacheService } from './cache.service';
@@ -16,6 +16,7 @@ interface HtmlResult {
 @Injectable()
 export class WatsonService {
   private client: NLU;
+  private logger = new Logger(WatsonService.name);
 
   constructor(private cache: CacheService) {
     this.client = new NLU({
@@ -26,6 +27,10 @@ export class WatsonService {
   }
 
   async analizeText(text: string) {
+    this.logger.log(
+      JSON.stringify({ type: 'watson.analyze.text', data: { text } }),
+    );
+
     const data = await this.cache.get<TextResult>(text);
 
     if (data) {
@@ -60,6 +65,10 @@ export class WatsonService {
   }
 
   async analizeUrl(url: string) {
+    this.logger.log(
+      JSON.stringify({ type: 'watson.analyze.url', data: { url } }),
+    );
+
     const data = await this.cache.get<HtmlResult>(url);
 
     if (data) {

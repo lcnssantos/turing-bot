@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CognitiveResponseDto } from '../cognitive.dto';
 import { GoogleService } from './google.service';
 import { WatsonService } from './watson.service';
 
 @Injectable()
 export class CognitiveService {
+  private logger = new Logger(CognitiveService.name);
+
   constructor(
     private watsonService: WatsonService,
     private googleService: GoogleService,
@@ -22,6 +24,13 @@ export class CognitiveService {
     const firstLink = googleData.response[0]?.url;
     const secondLink = googleData.response[1]?.url;
     let usedLink: string;
+
+    this.logger.log(
+      JSON.stringify({
+        type: 'cognitive.analyze.links',
+        data: [firstLink, secondLink],
+      }),
+    );
 
     try {
       var {

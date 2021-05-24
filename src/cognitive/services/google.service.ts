@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CacheService } from './cache.service';
 const serp = require('serp');
 
@@ -31,9 +31,15 @@ const blackListSites = ['youtube', 'facebook', 'twitter', 'linkedin'];
 
 @Injectable()
 export class GoogleService {
+  private logger = new Logger(GoogleService.name);
+
   constructor(private cacheService: CacheService) {}
 
   async fetch(searchTerm: string): Promise<GoogleResponse> {
+    this.logger.log(
+      JSON.stringify({ type: 'google.search', data: { searchTerm } }),
+    );
+
     if (searchTerm === '') {
       throw new Error('No search');
     }
