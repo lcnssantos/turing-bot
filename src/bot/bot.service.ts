@@ -69,8 +69,6 @@ export class BotService {
             'Infelizmente um erro aconteceu, tente mais tarde',
             chatId,
           );
-
-          connector.sendText(JSON.stringify(e), chatId);
           break;
       }
     }
