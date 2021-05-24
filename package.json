@@ -29,6 +29,7 @@
     "cache-manager-mongodb": "^0.3.0",
     "ibm-watson": "^6.0.4",
     "reflect-metadata": "^0.1.13",
+    "request": "^2.88.2",
     "rimraf": "^3.0.2",
     "rxjs": "^6.6.6",
     "serp": "^2.1.0",
