@@ -50,7 +50,7 @@ export class WatsonService {
     await this.cache.save<TextResult>(
       text,
       { result, text },
-      15 * 24 * 60 * 60,
+      365 * 24 * 60 * 60,
     );
 
     return {
@@ -83,7 +83,7 @@ export class WatsonService {
       },
     });
 
-    await this.cache.save<HtmlResult>(url, { result, url }, 15 * 24 * 60 * 60);
+    await this.cache.save<HtmlResult>(url, { result, url }, 365 * 24 * 60 * 60);
 
     return {
       result,
