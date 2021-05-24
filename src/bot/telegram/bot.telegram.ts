@@ -13,10 +13,22 @@ export class BotTelegram implements BotInterface {
   }
 
   async sendHtml(html: string, chatId: string) {
+    this.logger.log(
+      JSON.stringify({
+        type: 'telegram.html.send',
+        data: { chatId },
+      }),
+    );
     await this.bot.telegram.sendMessage(chatId, html, { parse_mode: 'HTML' });
   }
 
   async startTyping(chatId: string) {
+    this.logger.log(
+      JSON.stringify({
+        type: 'telegram.start.typing',
+        data: { chatId },
+      }),
+    );
     await this.bot.telegram.sendChatAction(chatId, 'typing');
   }
 
@@ -25,11 +37,21 @@ export class BotTelegram implements BotInterface {
   }
 
   async sendText(text: string, chatId: string) {
+    this.logger.log(
+      JSON.stringify({
+        type: 'telegram.send.text',
+        data: { chatId },
+      }),
+    );
     await this.bot.telegram.sendMessage(chatId, text);
   }
 
   async configure(server: HttpServer) {
-    this.logger.log('Start configure');
+    this.logger.log(
+      JSON.stringify({
+        type: 'telegram.configure',
+      }),
+    );
 
     this.bot.start((ctx) => {
       const name = ctx.from.first_name;
@@ -47,7 +69,12 @@ export class BotTelegram implements BotInterface {
 
     if (process.env.ENV === 'PROD') {
       const url = `${process.env.URL}/telegram`;
-      this.logger.log('Setting webhook!');
+      this.logger.log(
+        JSON.stringify({
+          type: 'telegram.webhook.setup',
+          data: { url },
+        }),
+      );
 
       await this.bot.telegram.setWebhook(url);
       await server.use(this.bot.webhookCallback('/telegram'));
@@ -55,6 +82,10 @@ export class BotTelegram implements BotInterface {
       await this.bot.launch();
     }
 
-    this.logger.log('Bot running');
+    this.logger.log(
+      JSON.stringify({
+        type: 'telegram.bot.started',
+      }),
+    );
   }
 }

@@ -1,4 +1,4 @@
-import { HttpServer, Injectable } from '@nestjs/common';
+import { HttpServer, Injectable, Logger } from '@nestjs/common';
 import { CognitiveService } from 'src/cognitive/services/cognitive.service';
 import { BotInterface } from './bot.interface';
 import { BotTelegram } from './telegram/bot.telegram';
@@ -6,6 +6,7 @@ import { BotTelegram } from './telegram/bot.telegram';
 @Injectable()
 export class BotService {
   private connectors: BotInterface[];
+  private logger = new Logger(BotService.name);
 
   constructor(
     private cognitiveService: CognitiveService,
@@ -21,10 +22,24 @@ export class BotService {
         connector.registerMessageListener(this.receiveMessage.bind(this));
       }),
     );
+
+    this.logger.log(
+      JSON.stringify({
+        type: 'bot.connectors.configured',
+        data: { quantity: this.connectors.length },
+      }),
+    );
   }
 
   async receiveMessage(text: string, chatId: string, connector: BotInterface) {
     try {
+      this.logger.log(
+        JSON.stringify({
+          type: 'bot.message.received',
+          data: text,
+        }),
+      );
+
       await connector.startTyping(chatId);
 
       const result = await this.cognitiveService.fetch(text);
@@ -43,6 +58,13 @@ export class BotService {
         chatId,
       );
 
+      this.logger.log(
+        JSON.stringify({
+          type: 'bot.suggestions.sended',
+          data: result.suggestions,
+        }),
+      );
+
       if (result.links.length) {
         if (result.links.length > 1) {
           await connector.sendText(
@@ -57,6 +79,11 @@ export class BotService {
         );
       }
     } catch (e) {
+      this.logger.error({
+        type: 'bot.interaction.error',
+        data: e,
+      });
+
       switch (e.message) {
         case 'NOTFOUND':
           connector.sendText(
